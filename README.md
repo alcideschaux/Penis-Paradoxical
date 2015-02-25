@@ -1,6 +1,6 @@
 ## Paradoxical Tumors in Penile Cancer
 
-### Aim of the study
+### Summary
 The aim of this study is to report the clinicopathologic and outcome features of superficial high-grade and deep low-grade penile squamous cell carcinomas. For this, we used a retrospectively-colleted series of patients with penile cancer, in which we identified 41 cases corresponding to 12 superficial high-grade tumors and 29 deep low-grade tumors. As outcomes we evaluated inguinal lymph node status, presence of tumor relapse, final nodal status, and cancer-specific death. Follow-up ranged from 0.8 to 386.7 months (mean, 152.5 months; median, 157.3 months). Clinicopathologic features were similar between superficial high-grade and deep low-grade tumors, except for a tendendy (Fisher’s exact P = 0.057) of the former to include tumors with a verruciform pattern of growth. A significantly higher proportion of inguinal lymph node metastasis was found in superficial high-grade tumors compared to deep low-grade tumors (80% vs. 20% respectively, Fisher’s exact P = 0.02). No significant differences were found regarding tumor relapse (Fisher’s exact P = 0.52), final nodal status (Mantel-Cox’s P = 0.42), or cancer-related death (Mantel-Cox’s P = 0.52). Our findings suggest that patients with superficial high-grade tumors may be treated differently from patients with deep low-grade tumors, at least to control short-term local disease. Prophylactic inguinal lymphadenectomuy might be indicated in cases of superficial tumors with high-grade histology while in deeply invasive low-grade penile carcinomas a more conservative approach may be considered.
 
 ### Description of the repository
@@ -205,7 +205,7 @@ Var <- Data$Size
 numerical.plot(Var, label = "Tumor Size, cm")
 ```
 
-![plot of chunk Size](figure/Size-1.png) 
+![plot of chunk Size](figure/Size-1.png) ![plot of chunk Size](figure/Size-2.png) 
 
 ```r
 descriptive.numerical(Var)
@@ -233,7 +233,7 @@ Var <- Data$Age
 numerical.plot(Var, label = "Patient's Age, years")
 ```
 
-![plot of chunk Age](figure/Age-1.png) 
+![plot of chunk Age](figure/Age-1.png) ![plot of chunk Age](figure/Age-2.png) 
 
 ```r
 descriptive.numerical(Var)
@@ -430,7 +430,7 @@ Var <- Data$FollowUp
 numerical.plot(Var, label = "Follow-Up, Months")
 ```
 
-![plot of chunk FollowUp](figure/FollowUp-1.png) 
+![plot of chunk FollowUp](figure/FollowUp-1.png) ![plot of chunk FollowUp](figure/FollowUp-2.png) 
 
 ```r
 descriptive.numerical(Var)
