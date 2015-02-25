@@ -90,9 +90,16 @@ __<a href="#Descriptive">Descriptive Statistics.</a>__ All the variables include
 
 __Inferential Statistics:__ Statistical tests (Fisher's exact test for categorical variables, Kruskal-Wallis test for numerical variables) were carried out to compare the clinicopathologic and outcome features between superficial high-grade and deep low-grade tumors. A 2-tailed P value was reported in all instances. Reported statistics included absolute and relative percentages for categorical variables; and mean, standard deviation, median, interquartile range, minimum and maximum value for numeric variables, by tumor type (superficial high-grade vs. deep low-grade).
 
-__Survival Analysis.__ Survival curves for final nodal status and cancer-related death by tumor type (superficial high-grade vs. deep low-grade) were built using the Kaplan-Meier method and compared using the Mantel-Cox (log-rank) test. A 2-tailed P value was reported in all instances. 
+__Survival Analysis.__ For all variables in the dataset survival curves were built for final nodal status and cancer-related death using the Kaplan-Meier method. Survival curves were compared using the Mantel-Cox (log-rank) test. Numerical variables were splitted in 2 levels using the median as the cutoff point. A 2-tailed P value was reported in all instances.
 
 __Logistic Regression Analysis.__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
+
+
+```r
+library(knitr)
+opts_chunk$set(fig.width = 8, fig.height = 6)
+```
+
 
 ### <a name="Descriptive">Descriptive Statistics</a>
 Here it follows the description of all the variables included in the analyzed dataset.
@@ -152,7 +159,7 @@ _Number of missing cases: 0 cases._
 
 ```r
 Var <- Data$Anatomical
-categorical.plot(Var, align = "h", left = 11)
+categorical.plot(Var, align = "h", left = 14)
 ```
 
 ![plot of chunk Anatomical](figure/Anatomical-1.png) 
@@ -876,7 +883,181 @@ descriptive.categorical.group(Var1, Var2)
 
 ***
 
-### Survival Analysis
+### <a name="Survival_FN">Survival Analysis: Final Nodal Status</a>
+
+```r
+x.lab <- "Follow-Up, Months"
+y.lab <- "Survival Function"
+# Defining outcome variable
+Status <- Data$Final_Nodal
+# Creating dicotomic variables from numerical variables for plotting
+Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE), c("Above Median Size"), c("Below Median Size")))
+Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE), c("Above Median Age"), c("Below Median Age")))
+# By type of tumor
+with(Data, survival.plot(Paradoxical, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Tumor Type"))
+```
+
+```
+## Loading required package: survival
+## Loading required package: splines
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-1.png) 
+
+```r
+# By surgical procedure
+with(Data, survival.plot(Procedure, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Surgical Procedure"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-2.png) 
+
+```r
+# By anatomical location
+with(Data, survival.plot(Anatomical, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Anatomical Location", ylim = c(0, 1.09)))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-3.png) 
+
+```r
+# By anatomical level
+with(Data, survival.plot(Level, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Anatomical Level", ylim = c(0, 1.09)))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-4.png) 
+
+```r
+# By median tumor size
+with(Data, survival.plot(Size_Median, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Median Tumor Size"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-5.png) 
+
+```r
+# By median patient's age
+with(Data, survival.plot(Age_Median, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Median Patient's Age"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-6.png) 
+
+```r
+# By urethral invasion
+with(Data, survival.plot(Urethra, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Urethral Invasion"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-7.png) 
+
+```r
+# By vascular invasion
+with(Data, survival.plot(Vascular, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Vascular Invasion"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-8.png) 
+
+```r
+# By perineural invasion
+with(Data, survival.plot(Perineural, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Perineural Invasion"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-9.png) 
+
+```r
+# By pathological T stage
+with(Data, survival.plot(pT, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Pathological T Stage"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-10.png) 
+
+```r
+# By clinical N stage
+with(Data, survival.plot(cN, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Clinical N Stage"))
+```
+
+![plot of chunk FN_Survival](figure/FN_Survival-11.png) 
+
+### <a name="Survival_DOD">Survival Analysis: Cancer-Related Death</a>
+
+```r
+# Defining outcome variable
+Status <- Data$DOD
+# Creating dicotomic variables from numerical variables for plotting
+Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE), c("Above Median Size"), c("Below Median Size")))
+Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE), c("Above Median Age"), c("Below Median Age")))
+# By type of tumor
+with(Data, survival.plot(Paradoxical, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab, title = "Cancer-Related Death by Tumor Type"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-1.png) 
+
+```r
+# By surgical procedure
+with(Data, survival.plot(Procedure, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Surgical Procedure"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-2.png) 
+
+```r
+# By anatomical location
+with(Data, survival.plot(Anatomical, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Anatomical Location"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-3.png) 
+
+```r
+# By anatomical level
+with(Data, survival.plot(Level, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Anatomical Level"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-4.png) 
+
+```r
+# By median tumor size
+with(Data, survival.plot(Size_Median, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Median Tumor Size"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-5.png) 
+
+```r
+# By median patient's age
+with(Data, survival.plot(Age_Median, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Median Patient's Age"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-6.png) 
+
+```r
+# By urethral invasion
+with(Data, survival.plot(Urethra, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Urethral Invasion"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-7.png) 
+
+```r
+# By vascular invasion
+with(Data, survival.plot(Vascular, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Vascular Invasion"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-8.png) 
+
+```r
+# By perineural invasion
+with(Data, survival.plot(Perineural, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Perineural Invasion"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-9.png) 
+
+```r
+# By pathological T stage
+with(Data, survival.plot(pT, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Pathological T Stage"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-10.png) 
+
+```r
+# By clinical N stage
+with(Data, survival.plot(cN, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Clinical N Stage"))
+```
+
+![plot of chunk DOD_Survival](figure/DOD_Survival-11.png) 
+
 
 ### Logistic Regression Analysis
 
