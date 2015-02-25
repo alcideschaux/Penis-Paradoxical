@@ -37,21 +37,30 @@ We then recoded 3 variables, creating new variables cancer-related death (`DOD`)
 Data$DOD <- ifelse(Data$Outcome == "Died of cancer", c("Yes"), c("No"))
 Data$DOD <- factor(Data$DOD)
 # Creating a new variable for the final nodal status. Positive cases where those with:
-        # Nodal metastasis in lymphadenectomy
-        Data$Final_Nodal <- ifelse(Data$Mets == "Yes", c("Positive"), c("Negative"))
-        # Local relapse during follow-up
-        Data$Final_Nodal[Data$Local == "Yes"] <- "Positive"
-        # Unfavorable outcome, including alive with disease and death by cancer
-        Data$Final_Nodal[Data$Outcome == "Alive with disease"] <- "Positive"
-        Data$Final_Nodal[Data$Outcome == "Died of cancer"] <- "Positive"
-        Data$Final_Nodal <- factor(Data$Final_Nodal)
+  # Nodal metastasis in lymphadenectomy
+  Data$Final_Nodal <- ifelse(Data$Mets == "Yes", c("Positive"), c("Negative"))
+  # Local relapse during follow-up
+  Data$Final_Nodal[Data$Local == "Yes"] <- "Positive"
+  # Unfavorable outcome, including alive with disease and death by cancer
+  Data$Final_Nodal[Data$Outcome == "Alive with disease"] <- "Positive"
+  Data$Final_Nodal[Data$Outcome == "Died of cancer"] <- "Positive"
+  Data$Final_Nodal <- factor(Data$Final_Nodal)
 # Creating a new variable for anatomical location
-Data$Anatomical[Data$Glans == "Yes" & Data$Sulcus == "No" & Data$Foreskin == "No"] <- "Glans alone"
-Data$Anatomical[Data$Glans == "Yes" & Data$Sulcus == "Yes" & Data$Foreskin == "No"] <- "Glans + Coronal sulcus"
-Data$Anatomical[Data$Glans == "Yes" & Data$Sulcus == "Yes" & Data$Foreskin == "Yes"] <- "Glans + Coronal sulcus + Foreskin"
-Data$Anatomical <- factor(Data$Anatomical, levels = c("Glans alone", "Glans + Coronal sulcus", "Glans + Coronal sulcus + Foreskin"))
+Data$Anatomical[Data$Glans == "Yes" &
+  Data$Sulcus == "No" &
+  Data$Foreskin == "No"] <- "Glans alone"
+Data$Anatomical[Data$Glans == "Yes" &
+  Data$Sulcus == "Yes" &
+  Data$Foreskin == "No"] <- "Glans + Coronal sulcus"
+Data$Anatomical[Data$Glans == "Yes" &
+  Data$Sulcus == "Yes" &
+  Data$Foreskin == "Yes"] <- "Glans + Coronal sulcus + Foreskin"
+Data$Anatomical <- factor(Data$Anatomical,
+  levels = c("Glans alone", "Glans + Coronal sulcus",
+    "Glans + Coronal sulcus + Foreskin"))
 # Releveling variables
-Data$Subtype <- factor(Data$Subtype, levels = c("Usual", "Verrucous", "Papillary", "Warty", "Mixed"))
+Data$Subtype <- factor(Data$Subtype,
+  levels = c("Usual", "Verrucous", "Papillary", "Warty", "Mixed"))
 ```
 
 We finally searched the dataset for cases of superficial high-grade and deep low-grade tumors, using the following criteria:
@@ -64,13 +73,20 @@ We then excluded the missing cases and dropped unused levels.
 
 ```r
 # Superficial High-Grade Tumors
-Data$Paradoxical[Data$Grade == "Grade 3" & Data$Level == "Lamina propria"] <- "Superficial High-Grade"
-Data$Paradoxical[Data$Grade == "Grade 3" & Data$Level == "Corpus spongiosum" & Data$Thickness <= 5] <- "Superficial High-Grade"
+Data$Paradoxical[Data$Grade == "Grade 3" &
+  Data$Level == "Lamina propria"] <- "Superficial High-Grade"
+Data$Paradoxical[Data$Grade == "Grade 3" &
+  Data$Level == "Corpus spongiosum" &
+  Data$Thickness <= 5] <- "Superficial High-Grade"
 # Deep Low-Grade Tumors
-Data$Paradoxical[Data$Grade == "Grade 1" & Data$Level == "Corpus cavernosum"] <- "Deep Low-Grade"
-Data$Paradoxical[Data$Grade == "Grade 1" & Data$Level == "Corpus spongiosum" & Data$Thickness >= 10] <- "Deep Low-Grade"
+Data$Paradoxical[Data$Grade == "Grade 1" &
+  Data$Level == "Corpus cavernosum"] <- "Deep Low-Grade"
+Data$Paradoxical[Data$Grade == "Grade 1" &
+  Data$Level == "Corpus spongiosum" &
+  Data$Thickness >= 10] <- "Deep Low-Grade"
 # Converting to Factor
-Data$Paradoxical <- factor(Data$Paradoxical, levels = c("Superficial High-Grade", "Deep Low-Grade"))
+Data$Paradoxical <- factor(Data$Paradoxical,
+  levels = c("Superficial High-Grade", "Deep Low-Grade"))
 # Excluding missing cases
 Data <- Data[complete.cases(Data$Paradoxical), ]
 # Dropping unused levels
@@ -99,7 +115,6 @@ __Logistic Regression Analysis.__ Odds ratios (OR) with 95% confidence intervals
 library(knitr)
 opts_chunk$set(fig.width = 8, fig.height = 6)
 ```
-
 
 ### <a name="Descriptive">Descriptive Statistics</a>
 Here it follows the description of all the variables included in the analyzed dataset.
@@ -891,85 +906,104 @@ y.lab <- "Survival Function"
 # Defining outcome variable
 Status <- Data$Final_Nodal
 # Creating dicotomic variables from numerical variables for plotting
-Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE), c("Above Median Size"), c("Below Median Size")))
-Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE), c("Above Median Age"), c("Below Median Age")))
+Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE),
+  c("Above Median Size"), c("Below Median Size")))
+Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE),
+  c("Above Median Age"), c("Below Median Age")))
 # By type of tumor
-with(Data, survival.plot(Paradoxical, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Tumor Type"))
-```
-
-```
-## Loading required package: survival
-## Loading required package: splines
+with(Data, survival.plot(Paradoxical, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Tumor Type"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-1.png) 
 
 ```r
 # By surgical procedure
-with(Data, survival.plot(Procedure, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Surgical Procedure"))
+with(Data, survival.plot(Procedure, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Surgical Procedure"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-2.png) 
 
 ```r
 # By anatomical location
-with(Data, survival.plot(Anatomical, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Anatomical Location", ylim = c(0, 1.09)))
+with(Data, survival.plot(Anatomical, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab, ylim = c(0, 1.09),
+  title = "Final Nodal Status by Anatomical Location"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-3.png) 
 
 ```r
 # By anatomical level
-with(Data, survival.plot(Level, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Anatomical Level", ylim = c(0, 1.09)))
+with(Data, survival.plot(Level, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab, ylim = c(0, 1.09),
+  title = "Final Nodal Status by Anatomical Level"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-4.png) 
 
 ```r
 # By median tumor size
-with(Data, survival.plot(Size_Median, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Median Tumor Size"))
+with(Data, survival.plot(Size_Median, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Median Tumor Size"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-5.png) 
 
 ```r
 # By median patient's age
-with(Data, survival.plot(Age_Median, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Median Patient's Age"))
+with(Data, survival.plot(Age_Median, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Median Patient's Age"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-6.png) 
 
 ```r
 # By urethral invasion
-with(Data, survival.plot(Urethra, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Urethral Invasion"))
+with(Data, survival.plot(Urethra, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Urethral Invasion"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-7.png) 
 
 ```r
 # By vascular invasion
-with(Data, survival.plot(Vascular, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Vascular Invasion"))
+with(Data, survival.plot(Vascular, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Vascular Invasion"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-8.png) 
 
 ```r
 # By perineural invasion
-with(Data, survival.plot(Perineural, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Perineural Invasion"))
+with(Data, survival.plot(Perineural, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Perineural Invasion"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-9.png) 
 
 ```r
 # By pathological T stage
-with(Data, survival.plot(pT, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Pathological T Stage"))
+with(Data, survival.plot(pT, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Pathological T Stage"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-10.png) 
 
 ```r
 # By clinical N stage
-with(Data, survival.plot(cN, FollowUp, Status, xlab = x.lab, ylab = y.lab, title = "Final Nodal Status by Clinical N Stage"))
+with(Data, survival.plot(cN, FollowUp, Status,
+  xlab = x.lab, ylab = y.lab,
+  title = "Final Nodal Status by Clinical N Stage"))
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-11.png) 
@@ -980,84 +1014,107 @@ with(Data, survival.plot(cN, FollowUp, Status, xlab = x.lab, ylab = y.lab, title
 # Defining outcome variable
 Status <- Data$DOD
 # Creating dicotomic variables from numerical variables for plotting
-Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE), c("Above Median Size"), c("Below Median Size")))
-Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE), c("Above Median Age"), c("Below Median Age")))
+Size_Median <- factor(ifelse(Data$Size > median(Data$Size, na.rm = TRUE),
+  c("Above Median Size"), c("Below Median Size")))
+Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE),
+  c("Above Median Age"), c("Below Median Age")))
 # By type of tumor
-with(Data, survival.plot(Paradoxical, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab, title = "Cancer-Related Death by Tumor Type"))
+with(Data, survival.plot(Paradoxical, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Tumor Type"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-1.png) 
 
 ```r
 # By surgical procedure
-with(Data, survival.plot(Procedure, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Surgical Procedure"))
+with(Data, survival.plot(Procedure, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Surgical Procedure"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-2.png) 
 
 ```r
 # By anatomical location
-with(Data, survival.plot(Anatomical, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Anatomical Location"))
+with(Data, survival.plot(Anatomical, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Anatomical Location"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-3.png) 
 
 ```r
 # By anatomical level
-with(Data, survival.plot(Level, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Anatomical Level"))
+with(Data, survival.plot(Level, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Anatomical Level"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-4.png) 
 
 ```r
 # By median tumor size
-with(Data, survival.plot(Size_Median, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Median Tumor Size"))
+with(Data, survival.plot(Size_Median, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Median Tumor Size"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-5.png) 
 
 ```r
 # By median patient's age
-with(Data, survival.plot(Age_Median, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Median Patient's Age"))
+with(Data, survival.plot(Age_Median, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Median Patient's Age"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-6.png) 
 
 ```r
 # By urethral invasion
-with(Data, survival.plot(Urethra, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Urethral Invasion"))
+with(Data, survival.plot(Urethra, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Urethral Invasion"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-7.png) 
 
 ```r
 # By vascular invasion
-with(Data, survival.plot(Vascular, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Vascular Invasion"))
+with(Data, survival.plot(Vascular, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Vascular Invasion"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-8.png) 
 
 ```r
 # By perineural invasion
-with(Data, survival.plot(Perineural, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Perineural Invasion"))
+with(Data, survival.plot(Perineural, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Perineural Invasion"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-9.png) 
 
 ```r
 # By pathological T stage
-with(Data, survival.plot(pT, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Pathological T Stage"))
+with(Data, survival.plot(pT, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Pathological T Stage"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-10.png) 
 
 ```r
 # By clinical N stage
-with(Data, survival.plot(cN, FollowUp, Status, ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,title = "Cancer-Related Death by Clinical N Stage"))
+with(Data, survival.plot(cN, FollowUp, Status,
+  ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
+  title = "Cancer-Related Death by Clinical N Stage"))
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-11.png) 
 
 
 ### Logistic Regression Analysis
-
