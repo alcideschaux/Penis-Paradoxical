@@ -1,8 +1,3 @@
----
-output:
-  html_document:
-    theme: cosmo
----
 ## Paradoxical Tumors in Penile Cancer
 
 ### Summary
@@ -38,7 +33,8 @@ We then recoded 3 variables, creating new variables cancer-related death (`DOD`)
 # Creating a new variable for cancer-related death
 Data$DOD <- ifelse(Data$Outcome == "Died of cancer", c("Yes"), c("No"))
 Data$DOD <- factor(Data$DOD)
-# Creating a new variable for the final nodal status. Positive cases where those with:
+# Creating a new variable for the final nodal status
+## Positive cases where those with:
   # Nodal metastasis in lymphadenectomy
   Data$Final_Nodal <- ifelse(Data$Mets == "Yes", c("Positive"), c("Negative"))
   # Local relapse during follow-up
@@ -579,7 +575,7 @@ Predictors <- with(Data, list(
   "Superficial high-grade vs. deep low-grade" = Paradoxical_Inv,
   "Primary treatment" = Procedure,
   "Age > median" = Age_Median,
-  "Tumor affecting multiple anatomical compartments" = Multicompartment,
+  "Multicompartment tumor" = Multicompartment,
   "Invasion of corpus cavernosum" = CC,
   "Tumor size > median" = Size_Median,
   "Invasion of penile urethra" = Urethra,
@@ -618,6 +614,7 @@ logistic.table(Outcome, Predictors, Varlabels)
 *** 
 
 #### Cancer-Related Death
+Tumor median size was removed due to the lack of events in either level.
 ```{r DOD_OR}
 Outcome <- Data$DOD
 Predictors <- Predictors[-grep("Tumor size > median", Varlabels)]

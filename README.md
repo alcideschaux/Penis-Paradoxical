@@ -1,8 +1,3 @@
----
-output:
-  html_document:
-    theme: cosmo
----
 ## Paradoxical Tumors in Penile Cancer
 
 ### Summary
@@ -41,7 +36,8 @@ We then recoded 3 variables, creating new variables cancer-related death (`DOD`)
 # Creating a new variable for cancer-related death
 Data$DOD <- ifelse(Data$Outcome == "Died of cancer", c("Yes"), c("No"))
 Data$DOD <- factor(Data$DOD)
-# Creating a new variable for the final nodal status. Positive cases where those with:
+# Creating a new variable for the final nodal status
+## Positive cases where those with:
   # Nodal metastasis in lymphadenectomy
   Data$Final_Nodal <- ifelse(Data$Mets == "Yes", c("Positive"), c("Negative"))
   # Local relapse during follow-up
@@ -1142,7 +1138,7 @@ Predictors <- with(Data, list(
   "Superficial high-grade vs. deep low-grade" = Paradoxical_Inv,
   "Primary treatment" = Procedure,
   "Age > median" = Age_Median,
-  "Tumor affecting multiple anatomical compartments" = Multicompartment,
+  "Multicompartment tumor" = Multicompartment,
   "Invasion of corpus cavernosum" = CC,
   "Tumor size > median" = Size_Median,
   "Invasion of penile urethra" = Urethra,
@@ -1165,19 +1161,19 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 
 
-|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
-|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade        |  14.00  |     1.77     |    295.70     |  0.026  |
-|Primary treatment                                | 1.3e-08 |      NA      |   2.1e+117    |   0.99  |
-|Age > median                                     |  0.53   |    0.064     |     3.59      |   0.52  |
-|Tumor affecting multiple anatomical compartments |  1.18   |     0.14     |     8.03      |   0.87  |
-|Invasion of corpus cavernosum                    |  0.096  |    0.0046    |     0.75      |  0.047  |
-|Tumor size > median                              |  1.07   |    0.088     |     25.05     |   0.96  |
-|Invasion of penile urethra                       |  0.27   |    0.013     |     2.09      |   0.26  |
-|Vascular invasion                                |  11.00  |     1.03     |    127.12     |   0.04  |
-|Perineural invasion                              |  5.17   |     0.56     |     42.50     |   0.12  |
-|High pT (>pT3)                                   |  0.27   |    0.013     |     2.09      |   0.26  |
-|Positive clinical nodes                          |  1.59   |     0.24     |     13.20     |   0.63  |
+|Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade |  14.00  |     1.77     |    295.70     |  0.026  |
+|Primary treatment                         | 1.3e-08 |      NA      |   2.1e+117    |   0.99  |
+|Age > median                              |  0.53   |    0.064     |     3.59      |   0.52  |
+|Multicompartment tumor                    |  1.18   |     0.14     |     8.03      |   0.87  |
+|Invasion of corpus cavernosum             |  0.096  |    0.0046    |     0.75      |  0.047  |
+|Tumor size > median                       |  1.07   |    0.088     |     25.05     |   0.96  |
+|Invasion of penile urethra                |  0.27   |    0.013     |     2.09      |   0.26  |
+|Vascular invasion                         |  11.00  |     1.03     |    127.12     |   0.04  |
+|Perineural invasion                       |  5.17   |     0.56     |     42.50     |   0.12  |
+|High pT (>pT3)                            |  0.27   |    0.013     |     2.09      |   0.26  |
+|Positive clinical nodes                   |  1.59   |     0.24     |     13.20     |   0.63  |
 
 *** 
 
@@ -1190,19 +1186,19 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 
 
-|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
-|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade        |  2.45   |    0.092     |     65.89     |   0.54  |
-|Primary treatment                                |  1.71   |    0.064     |     45.68     |   0.71  |
-|Age > median                                     |  0.81   |     0.03     |     21.49     |   0.88  |
-|Tumor affecting multiple anatomical compartments | 1.4e-08 |      NA      |      Inf      |      1  |
-|Invasion of corpus cavernosum                    |  0.52   |    0.019     |     13.87     |   0.65  |
-|Tumor size > median                              |  0.50   |    0.018     |     13.76     |   0.64  |
-|Invasion of penile urethra                       |  1.21   |    0.045     |     32.60     |   0.89  |
-|Vascular invasion                                | 1.4e-07 |      NA      |   2.4e+227    |      1  |
-|Perineural invasion                              |  6.40   |     0.23     |    180.98     |   0.21  |
-|High pT (>pT3)                                   |  1.21   |    0.045     |     32.60     |   0.89  |
-|Positive clinical nodes                          | 9.5e+07 |   1.8e-282   |      NA       |      1  |
+|Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade |  2.45   |    0.092     |     65.89     |   0.54  |
+|Primary treatment                         |  1.71   |    0.064     |     45.68     |   0.71  |
+|Age > median                              |  0.81   |     0.03     |     21.49     |   0.88  |
+|Multicompartment tumor                    | 1.4e-08 |      NA      |      Inf      |      1  |
+|Invasion of corpus cavernosum             |  0.52   |    0.019     |     13.87     |   0.65  |
+|Tumor size > median                       |  0.50   |    0.018     |     13.76     |   0.64  |
+|Invasion of penile urethra                |  1.21   |    0.045     |     32.60     |   0.89  |
+|Vascular invasion                         | 1.4e-07 |      NA      |   2.4e+227    |      1  |
+|Perineural invasion                       |  6.40   |     0.23     |    180.98     |   0.21  |
+|High pT (>pT3)                            |  1.21   |    0.045     |     32.60     |   0.89  |
+|Positive clinical nodes                   | 9.5e+07 |   1.8e-282   |      NA       |      1  |
 
 *** 
 
@@ -1215,23 +1211,24 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 
 
-|Variables                                        |  OR   | Lower 95% CI | Higher 95% CI | P value |
-|:------------------------------------------------|:-----:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade        | 3.12  |     0.61     |     16.27     |   0.16  |
-|Primary treatment                                | 0.45  |     0.06     |     2.31      |   0.37  |
-|Age > median                                     | 0.44  |     0.08     |     2.11      |   0.31  |
-|Tumor affecting multiple anatomical compartments | 1.05  |     0.19     |     5.08      |   0.95  |
-|Invasion of corpus cavernosum                    | 0.43  |    0.086     |     2.17      |    0.3  |
-|Tumor size > median                              | 0.75  |     0.10     |     6.70      |   0.78  |
-|Invasion of penile urethra                       | 0.70  |     0.12     |     3.48      |   0.67  |
-|Vascular invasion                                | 18.60 |     1.96     |    421.69     |  0.019  |
-|Perineural invasion                              | 5.80  |     0.87     |     40.60     |  0.064  |
-|High pT (>pT3)                                   | 0.70  |     0.12     |     3.48      |   0.67  |
-|Positive clinical nodes                          | 1.89  |     0.40     |     10.50     |   0.43  |
+|Variables                                 |  OR   | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-----:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade | 3.12  |     0.61     |     16.27     |   0.16  |
+|Primary treatment                         | 0.45  |     0.06     |     2.31      |   0.37  |
+|Age > median                              | 0.44  |     0.08     |     2.11      |   0.31  |
+|Multicompartment tumor                    | 1.05  |     0.19     |     5.08      |   0.95  |
+|Invasion of corpus cavernosum             | 0.43  |    0.086     |     2.17      |    0.3  |
+|Tumor size > median                       | 0.75  |     0.10     |     6.70      |   0.78  |
+|Invasion of penile urethra                | 0.70  |     0.12     |     3.48      |   0.67  |
+|Vascular invasion                         | 18.60 |     1.96     |    421.69     |  0.019  |
+|Perineural invasion                       | 5.80  |     0.87     |     40.60     |  0.064  |
+|High pT (>pT3)                            | 0.70  |     0.12     |     3.48      |   0.67  |
+|Positive clinical nodes                   | 1.89  |     0.40     |     10.50     |   0.43  |
 
 *** 
 
 #### Cancer-Related Death
+Tumor median size was removed due to the lack of events in either level.
 
 ```r
 Outcome <- Data$DOD
@@ -1242,17 +1239,17 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 
 
-|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
-|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade        | 3.3e-08 |      NA      |      Inf      |      1  |
-|Primary treatment                                | 1.5e+08 |     0.00     |      NA       |      1  |
-|Age > median                                     | 7.7e-09 |      NA      |      Inf      |      1  |
-|Tumor affecting multiple anatomical compartments | 1.7e+08 |     0.00     |      NA       |      1  |
-|Invasion of corpus cavernosum                    | 3.3e+07 |     0.00     |      NA       |      1  |
-|Invasion of penile urethra                       | 2.1e-08 |      NA      |      Inf      |      1  |
-|Vascular invasion                                | 1.1e-07 |      NA      |      Inf      |      1  |
-|Perineural invasion                              |  1e-07  |      NA      |      Inf      |      1  |
-|High pT (>pT3)                                   | 2.1e-08 |      NA      |      Inf      |      1  |
-|Positive clinical nodes                          | 8.2e-09 |      NA      |      Inf      |      1  |
+|Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade | 3.3e-08 |      NA      |      Inf      |      1  |
+|Primary treatment                         | 1.5e+08 |     0.00     |      NA       |      1  |
+|Age > median                              | 7.7e-09 |      NA      |      Inf      |      1  |
+|Multicompartment tumor                    | 1.7e+08 |     0.00     |      NA       |      1  |
+|Invasion of corpus cavernosum             | 3.3e+07 |     0.00     |      NA       |      1  |
+|Invasion of penile urethra                | 2.1e-08 |      NA      |      Inf      |      1  |
+|Vascular invasion                         | 1.1e-07 |      NA      |      Inf      |      1  |
+|Perineural invasion                       |  1e-07  |      NA      |      Inf      |      1  |
+|High pT (>pT3)                            | 2.1e-08 |      NA      |      Inf      |      1  |
+|Positive clinical nodes                   | 8.2e-09 |      NA      |      Inf      |      1  |
 
 *** 
