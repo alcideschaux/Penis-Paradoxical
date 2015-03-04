@@ -1,3 +1,8 @@
+---
+output:
+  html_document:
+    theme: cosmo
+---
 ## Paradoxical Tumors in Penile Cancer
 
 ### Summary
@@ -12,7 +17,7 @@ This repository contains the full statistical analysis of the dataset that was u
 * The [R Markdown](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/README.Rmd) file used for this report
 * The [figures](https://github.com/alcideschaux/Penis-Paradoxical/tree/master/figure) included in this repository in PNG format
 
-Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown in [RStudio](http://www.rstudio.com) version 0.98.1102 and the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
+Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown inside [RStudio](http://www.rstudio.com) version 0.98.1102, powered by the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
 
 ### Building the dataset for analysis
 First we loaded the full dataset including 333 patiens with invasive penile squamous cell carcinoma.
@@ -99,15 +104,15 @@ Data analysis is divided in 4 sections, as it follows:
 
 __<a href="#Descriptive">Descriptive Statistics.</a>__ All the variables included in the dataset were analyzed using bar plots, histograms, box plots, and one-way tables. Factor variables were described using absolute and relative percentages. Numeric variables were described using mean, standard deviation, median, interquartile range, minimum and maximum value.
 
-__Inferential Statistics:__ Statistical tests (Fisher's exact test for categorical variables, Kruskal-Wallis test for numerical variables) were carried out to compare the clinicopathologic and outcome features between superficial high-grade and deep low-grade tumors. A 2-tailed P value was reported in all instances. Reported statistics included absolute and relative percentages for categorical variables; and mean, standard deviation, median, interquartile range, minimum and maximum value for numeric variables, by tumor type (superficial high-grade vs. deep low-grade).
+__<a href="#Inferential">Inferential Statistics:</a>__ Statistical tests (Fisher's exact test for categorical variables, Kruskal-Wallis test for numerical variables) were carried out to compare the clinicopathologic and outcome features between superficial high-grade and deep low-grade tumors. A 2-tailed P value was reported in all instances. Reported statistics included absolute and relative percentages for categorical variables; and mean, standard deviation, median, interquartile range, minimum and maximum value for numeric variables, by tumor type (superficial high-grade vs. deep low-grade).
 
-__Survival Analysis.__ For all variables in the dataset survival curves were built for final nodal status and cancer-related death using the Kaplan-Meier method. Survival curves were compared using the Mantel-Cox (log-rank) test. Numerical variables were splitted in 2 levels using the median as the cutoff point. A 2-tailed P value was reported in all instances.
+__Survival Analysis.__ For all variables in the dataset survival curves were built for <a href="#Survival_FN">final nodal status</a> and <a href="#Survival_DOD">cancer-related death</a> using the Kaplan-Meier method. Survival curves were compared using the Mantel-Cox (log-rank) test. Numerical variables were splitted in 2 levels using the median as the cutoff point. A 2-tailed P value was reported in all instances.
 
-__Logistic Regression Analysis.__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
+__<a href="#OR">Logistic Regression Analysis.</a>__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
 
 ```{r FiguresGlobal}
 library(knitr)
-opts_chunk$set(fig.width = 8, fig.height = 6)
+opts_chunk$set(fig.width = 8, fig.height = 6, message = FALSE, warning = FALSE)
 ```
 
 ### <a name="Descriptive">Descriptive Statistics</a>
@@ -554,5 +559,70 @@ with(Data, survival.plot(cN, FollowUp, Status,
   title = "Cancer-Related Death by Clinical N Stage"))
 ```
 
+***
 
-### Logistic Regression Analysis
+### <a name="OR">Logistic Regression Analysis</a>
+```{r Mets_Model}
+# Creating variables for GLM analysis
+Paradoxical_Inv <- factor(Data$Paradoxical,
+  levels = c("Deep Low-Grade", "Superficial High-Grade"))
+Data$Multicompartment <- factor(ifelse(Data$Anatomical == "Glans alone",
+  c("No"), c("Yes")))
+Data$CC <- factor(ifelse(Data$Level == "Corpus cavernosum",
+  c("Yes"), c("No")))
+Data$High_pT <- factor(ifelse(Data$pT == "T3",
+  c("Yes"), c("No")))
+Data$cN_Positive <- factor(ifelse(Data$cN == "cN0",
+  c("No"), c("Yes")))
+# Creating list of variables and labels
+Predictors <- with(Data, list(
+  "Superficial high-grade vs. deep low-grade" = Paradoxical_Inv,
+  "Primary treatment" = Procedure,
+  "Age > median" = Age_Median,
+  "Tumor affecting multiple anatomical compartments" = Multicompartment,
+  "Invasion of corpus cavernosum" = CC,
+  "Tumor size > median" = Size_Median,
+  "Invasion of penile urethra" = Urethra,
+  "Vascular invasion" = Vascular,
+  "Perineural invasion" = Perineural,
+  "High pT (>pT3)" = High_pT,
+  "Positive clinical nodes" = cN_Positive
+  ))
+Varlabels <- names(Predictors)
+```
+
+***
+
+#### Inguinal Lymph Node Metastasis
+```{r Mets_OR}
+Outcome <- Data$Mets
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+*** 
+
+#### Tumor Relapse
+```{r Relapse_OR}
+Outcome <- Data$Relapse
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+*** 
+
+#### Final Nodal Status
+```{r FN_OR}
+Outcome <- Data$Final_Nodal
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+*** 
+
+#### Cancer-Related Death
+```{r DOD_OR}
+Outcome <- Data$DOD
+Predictors <- Predictors[-grep("Tumor size > median", Varlabels)]
+Varlabels <- names(Predictors)
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+*** 

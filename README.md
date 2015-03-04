@@ -1,3 +1,8 @@
+---
+output:
+  html_document:
+    theme: cosmo
+---
 ## Paradoxical Tumors in Penile Cancer
 
 ### Summary
@@ -12,7 +17,7 @@ This repository contains the full statistical analysis of the dataset that was u
 * The [R Markdown](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/README.Rmd) file used for this report
 * The [figures](https://github.com/alcideschaux/Penis-Paradoxical/tree/master/figure) included in this repository in PNG format
 
-Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown in [RStudio](http://www.rstudio.com) version 0.98.1102 and the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
+Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown inside [RStudio](http://www.rstudio.com) version 0.98.1102, powered by the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
 
 ### Building the dataset for analysis
 First we loaded the full dataset including 333 patiens with invasive penile squamous cell carcinoma.
@@ -104,16 +109,16 @@ Data analysis is divided in 4 sections, as it follows:
 
 __<a href="#Descriptive">Descriptive Statistics.</a>__ All the variables included in the dataset were analyzed using bar plots, histograms, box plots, and one-way tables. Factor variables were described using absolute and relative percentages. Numeric variables were described using mean, standard deviation, median, interquartile range, minimum and maximum value.
 
-__Inferential Statistics:__ Statistical tests (Fisher's exact test for categorical variables, Kruskal-Wallis test for numerical variables) were carried out to compare the clinicopathologic and outcome features between superficial high-grade and deep low-grade tumors. A 2-tailed P value was reported in all instances. Reported statistics included absolute and relative percentages for categorical variables; and mean, standard deviation, median, interquartile range, minimum and maximum value for numeric variables, by tumor type (superficial high-grade vs. deep low-grade).
+__<a href="#Inferential">Inferential Statistics:</a>__ Statistical tests (Fisher's exact test for categorical variables, Kruskal-Wallis test for numerical variables) were carried out to compare the clinicopathologic and outcome features between superficial high-grade and deep low-grade tumors. A 2-tailed P value was reported in all instances. Reported statistics included absolute and relative percentages for categorical variables; and mean, standard deviation, median, interquartile range, minimum and maximum value for numeric variables, by tumor type (superficial high-grade vs. deep low-grade).
 
-__Survival Analysis.__ For all variables in the dataset survival curves were built for final nodal status and cancer-related death using the Kaplan-Meier method. Survival curves were compared using the Mantel-Cox (log-rank) test. Numerical variables were splitted in 2 levels using the median as the cutoff point. A 2-tailed P value was reported in all instances.
+__Survival Analysis.__ For all variables in the dataset survival curves were built for <a href="#Survival_FN">final nodal status</a> and <a href="#Survival_DOD">cancer-related death</a> using the Kaplan-Meier method. Survival curves were compared using the Mantel-Cox (log-rank) test. Numerical variables were splitted in 2 levels using the median as the cutoff point. A 2-tailed P value was reported in all instances.
 
-__Logistic Regression Analysis.__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
+__<a href="#OR">Logistic Regression Analysis.</a>__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
 
 
 ```r
 library(knitr)
-opts_chunk$set(fig.width = 8, fig.height = 6)
+opts_chunk$set(fig.width = 8, fig.height = 6, message = FALSE, warning = FALSE)
 ```
 
 ### <a name="Descriptive">Descriptive Statistics</a>
@@ -1116,5 +1121,138 @@ with(Data, survival.plot(cN, FollowUp, Status,
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-11.png) 
 
+***
 
-### Logistic Regression Analysis
+### <a name="OR">Logistic Regression Analysis</a>
+
+```r
+# Creating variables for GLM analysis
+Paradoxical_Inv <- factor(Data$Paradoxical,
+  levels = c("Deep Low-Grade", "Superficial High-Grade"))
+Data$Multicompartment <- factor(ifelse(Data$Anatomical == "Glans alone",
+  c("No"), c("Yes")))
+Data$CC <- factor(ifelse(Data$Level == "Corpus cavernosum",
+  c("Yes"), c("No")))
+Data$High_pT <- factor(ifelse(Data$pT == "T3",
+  c("Yes"), c("No")))
+Data$cN_Positive <- factor(ifelse(Data$cN == "cN0",
+  c("No"), c("Yes")))
+# Creating list of variables and labels
+Predictors <- with(Data, list(
+  "Superficial high-grade vs. deep low-grade" = Paradoxical_Inv,
+  "Primary treatment" = Procedure,
+  "Age > median" = Age_Median,
+  "Tumor affecting multiple anatomical compartments" = Multicompartment,
+  "Invasion of corpus cavernosum" = CC,
+  "Tumor size > median" = Size_Median,
+  "Invasion of penile urethra" = Urethra,
+  "Vascular invasion" = Vascular,
+  "Perineural invasion" = Perineural,
+  "High pT (>pT3)" = High_pT,
+  "Positive clinical nodes" = cN_Positive
+  ))
+Varlabels <- names(Predictors)
+```
+
+***
+
+#### Inguinal Lymph Node Metastasis
+
+```r
+Outcome <- Data$Mets
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+
+
+|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade        |  14.00  |     1.77     |    295.70     |  0.026  |
+|Primary treatment                                | 1.3e-08 |      NA      |   2.1e+117    |   0.99  |
+|Age > median                                     |  0.53   |    0.064     |     3.59      |   0.52  |
+|Tumor affecting multiple anatomical compartments |  1.18   |     0.14     |     8.03      |   0.87  |
+|Invasion of corpus cavernosum                    |  0.096  |    0.0046    |     0.75      |  0.047  |
+|Tumor size > median                              |  1.07   |    0.088     |     25.05     |   0.96  |
+|Invasion of penile urethra                       |  0.27   |    0.013     |     2.09      |   0.26  |
+|Vascular invasion                                |  11.00  |     1.03     |    127.12     |   0.04  |
+|Perineural invasion                              |  5.17   |     0.56     |     42.50     |   0.12  |
+|High pT (>pT3)                                   |  0.27   |    0.013     |     2.09      |   0.26  |
+|Positive clinical nodes                          |  1.59   |     0.24     |     13.20     |   0.63  |
+
+*** 
+
+#### Tumor Relapse
+
+```r
+Outcome <- Data$Relapse
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+
+
+|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade        |  2.45   |    0.092     |     65.89     |   0.54  |
+|Primary treatment                                |  1.71   |    0.064     |     45.68     |   0.71  |
+|Age > median                                     |  0.81   |     0.03     |     21.49     |   0.88  |
+|Tumor affecting multiple anatomical compartments | 1.4e-08 |      NA      |      Inf      |      1  |
+|Invasion of corpus cavernosum                    |  0.52   |    0.019     |     13.87     |   0.65  |
+|Tumor size > median                              |  0.50   |    0.018     |     13.76     |   0.64  |
+|Invasion of penile urethra                       |  1.21   |    0.045     |     32.60     |   0.89  |
+|Vascular invasion                                | 1.4e-07 |      NA      |   2.4e+227    |      1  |
+|Perineural invasion                              |  6.40   |     0.23     |    180.98     |   0.21  |
+|High pT (>pT3)                                   |  1.21   |    0.045     |     32.60     |   0.89  |
+|Positive clinical nodes                          | 9.5e+07 |   1.8e-282   |      NA       |      1  |
+
+*** 
+
+#### Final Nodal Status
+
+```r
+Outcome <- Data$Final_Nodal
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+
+
+|Variables                                        |  OR   | Lower 95% CI | Higher 95% CI | P value |
+|:------------------------------------------------|:-----:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade        | 3.12  |     0.61     |     16.27     |   0.16  |
+|Primary treatment                                | 0.45  |     0.06     |     2.31      |   0.37  |
+|Age > median                                     | 0.44  |     0.08     |     2.11      |   0.31  |
+|Tumor affecting multiple anatomical compartments | 1.05  |     0.19     |     5.08      |   0.95  |
+|Invasion of corpus cavernosum                    | 0.43  |    0.086     |     2.17      |    0.3  |
+|Tumor size > median                              | 0.75  |     0.10     |     6.70      |   0.78  |
+|Invasion of penile urethra                       | 0.70  |     0.12     |     3.48      |   0.67  |
+|Vascular invasion                                | 18.60 |     1.96     |    421.69     |  0.019  |
+|Perineural invasion                              | 5.80  |     0.87     |     40.60     |  0.064  |
+|High pT (>pT3)                                   | 0.70  |     0.12     |     3.48      |   0.67  |
+|Positive clinical nodes                          | 1.89  |     0.40     |     10.50     |   0.43  |
+
+*** 
+
+#### Cancer-Related Death
+
+```r
+Outcome <- Data$DOD
+Predictors <- Predictors[-grep("Tumor size > median", Varlabels)]
+Varlabels <- names(Predictors)
+logistic.table(Outcome, Predictors, Varlabels)
+```
+
+
+
+|Variables                                        |   OR    | Lower 95% CI | Higher 95% CI | P value |
+|:------------------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade        | 3.3e-08 |      NA      |      Inf      |      1  |
+|Primary treatment                                | 1.5e+08 |     0.00     |      NA       |      1  |
+|Age > median                                     | 7.7e-09 |      NA      |      Inf      |      1  |
+|Tumor affecting multiple anatomical compartments | 1.7e+08 |     0.00     |      NA       |      1  |
+|Invasion of corpus cavernosum                    | 3.3e+07 |     0.00     |      NA       |      1  |
+|Invasion of penile urethra                       | 2.1e-08 |      NA      |      Inf      |      1  |
+|Vascular invasion                                | 1.1e-07 |      NA      |      Inf      |      1  |
+|Perineural invasion                              |  1e-07  |      NA      |      Inf      |      1  |
+|High pT (>pT3)                                   | 2.1e-08 |      NA      |      Inf      |      1  |
+|Positive clinical nodes                          | 8.2e-09 |      NA      |      Inf      |      1  |
+
+*** 
