@@ -12,7 +12,7 @@ This repository contains the full statistical analysis of the dataset that was u
 * The [R Markdown](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/README.Rmd) file used for this report
 * The [figures](https://github.com/alcideschaux/Penis-Paradoxical/tree/master/figure) included in this repository in PNG format
 
-Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown inside [RStudio](http://www.rstudio.com) version 0.98.1102, powered by the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
+Data were analyzed using [R](http://www.r-project.org) version 3.1.2 “Pumpkin Helmet” (R Foundation for Statistical Computing, Vienna, Austria). Results were written using RMarkDown inside [RStudio](http://www.rstudio.com) version 0.99.292, powered by the [knitr](http://cran.r-project.org/web/packages/knitr/index.html) package version 1.9 by [Yihui Xie](http://yihui.name/knitr).
 
 ### Building the dataset for analysis
 First we loaded the full dataset including 333 patiens with invasive penile squamous cell carcinoma.
