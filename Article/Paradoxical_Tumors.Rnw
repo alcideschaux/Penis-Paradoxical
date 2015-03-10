@@ -29,13 +29,13 @@ source("Paradoxical_Tumors.R")
 
 \textbf{Objetives:} To report the clinicopathologic and outcome features of superficial high-grade and deep low-grade penile squamous cell carcinomas.
 
-\textbf{Methods:} From a retrospectively-colleted series of patients with penile cancer we identified \Sexpr{nrow(Data)} cases corresponding to \Sexpr{table(Data$Paradoxical)["Superficial High-Grade"]} superficial high-grade tumors and \Sexpr{table(Data$Paradoxical)["Deep Low-Grade"]} deep low-grade tumors. As outcomes we evaluated inguinal lymph node status, presence of tumor relapse, final nodal status, and cancer-specific death. Follow-up ranged from \Sexpr{min(Data$FollowUp)} to \Sexpr{max(Data$FollowUp)} months (mean, \Sexpr{round(mean(Data$FollowUp), 1)} months; median, \Sexpr{round(median(Data$FollowUp), 1)} months).
+\textbf{Methods:} From a retrospectively-collected series of patients with penile cancer we identified \Sexpr{nrow(Data)} cases corresponding to \Sexpr{table(Data$Paradoxical)["Superficial High-Grade"]} superficial high-grade tumors and \Sexpr{table(Data$Paradoxical)["Deep Low-Grade"]} deep low-grade tumors. As outcomes we evaluated inguinal lymph node status, presence of tumor relapse, final nodal status, and cancer-specific death. Follow-up ranged from \Sexpr{min(Data$FollowUp)} to \Sexpr{max(Data$FollowUp)} months (mean, \Sexpr{round(mean(Data$FollowUp), 1)} months; median, \Sexpr{round(median(Data$FollowUp), 1)} months).
 
 \textbf{Results:} Clinicopathologic features were similar between superficial high-grade and deep low-grade tumors, except for a tendendy (Fisher's exact $P=\Sexpr{P_Subtype}$) of the former to include tumors with a verruciform pattern of growth. A significantly higher proportion of inguinal lymph node metastasis was found in superficial high-grade tumors compared to deep low-grade tumors [\Sexpr{T2(T_Mets, 2, 1)} vs. \Sexpr{T2(T_Mets, 2, 2)} respectively, Fisher's exact $P=\Sexpr{P_Mets}$]. No significant differences were found regarding tumor relapse (Fisher's exact $P=\Sexpr{P_Relapse}$), final nodal status (Mantel-Cox's $P=\Sexpr{with(Data, survival.p(Paradoxical, FollowUp, Final_Nodal))}$), or cancer-related death (Mantel-Cox's $P=\Sexpr{with(Data, survival.p(Paradoxical, FollowUp, DOD))}$).
 
 \textbf{Conclusions:} Our findings suggest that patients with superficial high-grade tumors may be treated differently from patients with deep low-grade tumors, at least to control short-term local disease. Prophylactic inguinal lymphadenectomuy might be indicated in cases of superficial tumors with high-grade histology while in deeply invasive low-grade penile carcinomas a more conservative approach may be considered.\\
 
-\textbf{Keywords:} penile cancer; squamous cell carcinoma; histological grade; prognostic factors; outcome; TNM system.
+\textbf{Keywords:} penile cancer; squamous cell carcinoma; histological grade; prognostic factors; outcome; anatomical level.
 
 \end{abstract}
 
