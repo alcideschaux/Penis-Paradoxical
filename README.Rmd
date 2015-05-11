@@ -445,6 +445,7 @@ descriptive.categorical.group(Var1, Var2)
 
 ### <a name="Survival_FN">Survival Analysis: Final Nodal Status</a>
 ```{r FN_Survival}
+source("RiskTable.R")
 x.lab <- "Follow-Up, Months"
 y.lab <- "Survival Function"
 # Defining outcome variable
@@ -458,46 +459,57 @@ Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE),
 with(Data, survival.plot(Paradoxical, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Tumor Type"))
+with(Data, risk.table(Paradoxical, FollowUp, Status))
 # By surgical procedure
 with(Data, survival.plot(Procedure, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Surgical Procedure"))
+with(Data, risk.table(Procedure, FollowUp, Status))
 # By anatomical location
 with(Data, survival.plot(Anatomical, FollowUp, Status,
   xlab = x.lab, ylab = y.lab, ylim = c(0, 1.09),
   title = "Final Nodal Status by Anatomical Location"))
+with(Data, risk.table(Anatomical, FollowUp, Status))
 # By anatomical level
 with(Data, survival.plot(Level, FollowUp, Status,
   xlab = x.lab, ylab = y.lab, ylim = c(0, 1.09),
   title = "Final Nodal Status by Anatomical Level"))
+with(Data, risk.table(Level, FollowUp, Status))
 # By median tumor size
 with(Data, survival.plot(Size_Median, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Median Tumor Size"))
+with(Data, risk.table(Size_Median, FollowUp, Status))
 # By median patient's age
 with(Data, survival.plot(Age_Median, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Median Patient's Age"))
+with(Data, risk.table(Age_Median, FollowUp, Status))
 # By urethral invasion
 with(Data, survival.plot(Urethra, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Urethral Invasion"))
+with(Data, risk.table(Urethra, FollowUp, Status))
 # By vascular invasion
 with(Data, survival.plot(Vascular, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Vascular Invasion"))
+with(Data, risk.table(Vascular, FollowUp, Status))
 # By perineural invasion
 with(Data, survival.plot(Perineural, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Perineural Invasion"))
+with(Data, risk.table(Perineural, FollowUp, Status))
 # By pathological T stage
 with(Data, survival.plot(pT, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Pathological T Stage"))
+with(Data, risk.table(pT, FollowUp, Status))
 # By clinical N stage
 with(Data, survival.plot(cN, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
   title = "Final Nodal Status by Clinical N Stage"))
+with(Data, risk.table(cN, FollowUp, Status))
 ```
 
 ### <a name="Survival_DOD">Survival Analysis: Cancer-Related Death</a>
@@ -513,46 +525,57 @@ Age_Median <- factor(ifelse(Data$Age > median(Data$Age, na.rm = TRUE),
 with(Data, survival.plot(Paradoxical, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Tumor Type"))
+with(Data, risk.table(Paradoxical, FollowUp, Status))
 # By surgical procedure
 with(Data, survival.plot(Procedure, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Surgical Procedure"))
+with(Data, risk.table(Procedure, FollowUp, Status))
 # By anatomical location
 with(Data, survival.plot(Anatomical, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Anatomical Location"))
+with(Data, risk.table(Anatomical, FollowUp, Status))
 # By anatomical level
 with(Data, survival.plot(Level, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Anatomical Level"))
+with(Data, risk.table(Level, FollowUp, Status))
 # By median tumor size
 with(Data, survival.plot(Size_Median, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Median Tumor Size"))
+with(Data, risk.table(Size_Median, FollowUp, Status))
 # By median patient's age
 with(Data, survival.plot(Age_Median, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Median Patient's Age"))
+with(Data, risk.table(Age_Median, FollowUp, Status))
 # By urethral invasion
 with(Data, survival.plot(Urethra, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Urethral Invasion"))
+with(Data, risk.table(Urethra, FollowUp, Status))
 # By vascular invasion
 with(Data, survival.plot(Vascular, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Vascular Invasion"))
+with(Data, risk.table(Vascular, FollowUp, Status))
 # By perineural invasion
 with(Data, survival.plot(Perineural, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Perineural Invasion"))
+with(Data, risk.table(Perineural, FollowUp, Status))
 # By pathological T stage
 with(Data, survival.plot(pT, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Pathological T Stage"))
+with(Data, risk.table(pT, FollowUp, Status))
 # By clinical N stage
 with(Data, survival.plot(cN, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
   title = "Cancer-Related Death by Clinical N Stage"))
+with(Data, risk.table(cN, FollowUp, Status))
 ```
 
 ***
@@ -617,9 +640,41 @@ logistic.table(Outcome, Predictors, Varlabels)
 Tumor median size was removed due to the lack of events in either level.
 ```{r DOD_OR}
 Outcome <- Data$DOD
-Predictors <- Predictors[-grep("Tumor size > median", Varlabels)]
-Varlabels <- names(Predictors)
-logistic.table(Outcome, Predictors, Varlabels)
+Predictors_DOD <- Predictors[-grep("Tumor size > median", Varlabels)]
+Varlabels_DOD <- names(Predictors_DOD)
+logistic.table(Outcome, Predictors_DOD, Varlabels_DOD)
 ```
 
 *** 
+
+### <a name="HR">Cox's Proportional Hazards Regression Analysis</a>
+#### Inguinal Lymph Node Metastasis
+```{r Mets_HR}
+Outcome <- Data$Mets
+FU <- Data$FollowUp
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+***
+
+#### Tumor Relapse
+```{r Relapse_HR}
+Outcome <- Data$Relapse
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+*** 
+
+#### Final Nodal Status
+```{r FN_HR}
+Outcome <- Data$Final_Nodal
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+*** 
+
+#### Cancer-Related Death
+```{r DOD_HR}
+Outcome <- Data$DOD
+cox.table(Outcome, FU, Predictors, Varlabels)
+```

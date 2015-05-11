@@ -163,9 +163,9 @@ descriptive.categorical(Var)
 |:---------|:---------:|:----:|
 |Usual     |    24     | 58.5 |
 |Verrucous |     7     | 17.1 |
-|Papillary |     3     |  7.3 |
-|Warty     |     3     |  7.3 |
-|Mixed     |     4     |  9.8 |
+|Papillary |     3     | 7.3  |
+|Warty     |     3     | 7.3  |
+|Mixed     |     4     | 9.8  |
 
 _Number of missing cases: 0 cases._
 
@@ -215,7 +215,7 @@ descriptive.categorical(Var)
 |:-----------------|:---------:|:----:|
 |Corpus cavernosum |    27     | 65.9 |
 |Corpus spongiosum |    12     | 29.3 |
-|Lamina propria    |     2     |  4.9 |
+|Lamina propria    |     2     | 4.9  |
 
 _Number of missing cases: 0 cases._
 
@@ -414,7 +414,7 @@ descriptive.categorical(Var)
 
 |   | No. Cases |  %   |
 |:--|:---------:|:----:|
-|T1 |     1     |  2.9 |
+|T1 |     1     | 2.9  |
 |T2 |    18     | 52.9 |
 |T3 |    15     | 44.1 |
 
@@ -440,7 +440,7 @@ descriptive.categorical(Var)
 |    | No. Cases | %  |
 |:---|:---------:|:--:|
 |No  |    38     | 95 |
-|Yes |     2     |  5 |
+|Yes |     2     | 5  |
 
 _Number of missing cases: 1 cases._
 
@@ -491,9 +491,9 @@ descriptive.categorical(Var)
 
 |                      | No. Cases |  %   |
 |:---------------------|:---------:|:----:|
-|Alive with disease    |     3     |  7.3 |
+|Alive with disease    |     3     | 7.3  |
 |Alive without disease |    23     | 56.1 |
-|Died of cancer        |     1     |  2.4 |
+|Died of cancer        |     1     | 2.4  |
 |Died of other causes  |    14     | 34.1 |
 
 _Number of missing cases: 0 cases._
@@ -567,7 +567,7 @@ descriptive.categorical(Var)
 |    | No. Cases |  %   |
 |:---|:---------:|:----:|
 |No  |    40     | 97.6 |
-|Yes |     1     |  2.4 |
+|Yes |     1     | 2.4  |
 
 _Number of missing cases: 0 cases._
 
@@ -902,6 +902,7 @@ descriptive.categorical.group(Var1, Var2)
 ### <a name="Survival_FN">Survival Analysis: Final Nodal Status</a>
 
 ```r
+source("RiskTable.R")
 x.lab <- "Follow-Up, Months"
 y.lab <- "Survival Function"
 # Defining outcome variable
@@ -920,6 +921,17 @@ with(Data, survival.plot(Paradoxical, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-1.png) 
 
 ```r
+with(Data, risk.table(Paradoxical, FollowUp, Status))
+```
+
+
+
+|                       | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:----------------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Superficial High-Grade | 12 | 11 | 10  |  9  |  6  |  2  |  2  |
+|Deep Low-Grade         | 29 | 20 | 16  | 12  |  8  |  4  |  2  |
+
+```r
 # By surgical procedure
 with(Data, survival.plot(Procedure, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
@@ -927,6 +939,17 @@ with(Data, survival.plot(Procedure, FollowUp, Status,
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-2.png) 
+
+```r
+with(Data, risk.table(Procedure, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Partial penectomy | 25 | 19 | 17  | 14  |  8  |  4  |  3  |
+|Total penectomy   | 16 | 12 |  9  |  7  |  6  |  2  |  1  |
 
 ```r
 # By anatomical location
@@ -938,6 +961,18 @@ with(Data, survival.plot(Anatomical, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-3.png) 
 
 ```r
+with(Data, risk.table(Anatomical, FollowUp, Status))
+```
+
+
+
+|                                  | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:---------------------------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Glans alone                       | 26 | 19 | 14  | 13  | 10  |  3  |  1  |
+|Glans + Coronal sulcus            | 6  | 5  |  5  |  3  |  2  |  2  |  2  |
+|Glans + Coronal sulcus + Foreskin | 9  | 7  |  7  |  5  |  2  |  1  |  1  |
+
+```r
 # By anatomical level
 with(Data, survival.plot(Level, FollowUp, Status,
   xlab = x.lab, ylab = y.lab, ylim = c(0, 1.09),
@@ -945,6 +980,18 @@ with(Data, survival.plot(Level, FollowUp, Status,
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-4.png) 
+
+```r
+with(Data, risk.table(Level, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|
+|Corpus cavernosum | 27 | 19 | 15  | 12  |  8  |
+|Corpus spongiosum | 12 | 10 | 10  |  8  |  5  |
+|Lamina propria    | 2  | 2  |  1  |  1  |  1  |
 
 ```r
 # By median tumor size
@@ -956,6 +1003,17 @@ with(Data, survival.plot(Size_Median, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-5.png) 
 
 ```r
+with(Data, risk.table(Size_Median, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|
+|Above Median Size | 9  | 7  |  6  |  5  |  3  |
+|Below Median Size | 17 | 11 |  7  |  4  |  2  |
+
+```r
 # By median patient's age
 with(Data, survival.plot(Age_Median, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
@@ -963,6 +1021,17 @@ with(Data, survival.plot(Age_Median, FollowUp, Status,
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-6.png) 
+
+```r
+with(Data, risk.table(Age_Median, FollowUp, Status))
+```
+
+
+
+|                 | 0  | 50 | 100 | 150 | 200 |
+|:----------------|:--:|:--:|:---:|:---:|:---:|
+|Above Median Age | 19 | 13 | 10  |  7  |  5  |
+|Below Median Age | 22 | 18 | 16  | 14  |  9  |
 
 ```r
 # By urethral invasion
@@ -974,6 +1043,17 @@ with(Data, survival.plot(Urethra, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-7.png) 
 
 ```r
+with(Data, risk.table(Urethra, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:---|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|No  | 19 | 14 | 12  | 10  |  6  |  2  |  1  |
+|Yes | 15 | 11 |  9  |  7  |  4  |  3  |  3  |
+
+```r
 # By vascular invasion
 with(Data, survival.plot(Vascular, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
@@ -981,6 +1061,17 @@ with(Data, survival.plot(Vascular, FollowUp, Status,
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-8.png) 
+
+```r
+with(Data, risk.table(Vascular, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 |
+|:---|:--:|:--:|:---:|:---:|:---:|
+|No  | 36 | 27 | 22  | 17  | 12  |
+|Yes | 4  | 3  |  3  |  3  |  2  |
 
 ```r
 # By perineural invasion
@@ -992,6 +1083,17 @@ with(Data, survival.plot(Perineural, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-9.png) 
 
 ```r
+with(Data, risk.table(Perineural, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 | 250 |
+|:---|:--:|:--:|:---:|:---:|:---:|:---:|
+|No  | 34 | 26 | 21  | 16  | 11  |  5  |
+|Yes | 6  | 4  |  4  |  4  |  3  |  1  |
+
+```r
 # By pathological T stage
 with(Data, survival.plot(pT, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
@@ -1001,6 +1103,18 @@ with(Data, survival.plot(pT, FollowUp, Status,
 ![plot of chunk FN_Survival](figure/FN_Survival-10.png) 
 
 ```r
+with(Data, risk.table(pT, FollowUp, Status))
+```
+
+
+
+|   | 0  | 50 |
+|:--|:--:|:--:|
+|T1 | 1  | 1  |
+|T2 | 18 | 13 |
+|T3 | 15 | 11 |
+
+```r
 # By clinical N stage
 with(Data, survival.plot(cN, FollowUp, Status,
   xlab = x.lab, ylab = y.lab,
@@ -1008,6 +1122,18 @@ with(Data, survival.plot(cN, FollowUp, Status,
 ```
 
 ![plot of chunk FN_Survival](figure/FN_Survival-11.png) 
+
+```r
+with(Data, risk.table(cN, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 |
+|:---|:--:|:--:|:---:|
+|cN0 | 20 | 16 | 13  |
+|cN1 | 7  | 3  |  2  |
+|cN2 | 13 | 11 | 10  |
 
 ### <a name="Survival_DOD">Survival Analysis: Cancer-Related Death</a>
 
@@ -1028,6 +1154,17 @@ with(Data, survival.plot(Paradoxical, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-1.png) 
 
 ```r
+with(Data, risk.table(Paradoxical, FollowUp, Status))
+```
+
+
+
+|                       | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:----------------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Superficial High-Grade | 12 | 11 | 10  |  9  |  6  |  2  |  2  |
+|Deep Low-Grade         | 29 | 20 | 16  | 12  |  8  |  4  |  2  |
+
+```r
 # By surgical procedure
 with(Data, survival.plot(Procedure, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1035,6 +1172,17 @@ with(Data, survival.plot(Procedure, FollowUp, Status,
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-2.png) 
+
+```r
+with(Data, risk.table(Procedure, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Partial penectomy | 25 | 19 | 17  | 14  |  8  |  4  |  3  |
+|Total penectomy   | 16 | 12 |  9  |  7  |  6  |  2  |  1  |
 
 ```r
 # By anatomical location
@@ -1046,6 +1194,18 @@ with(Data, survival.plot(Anatomical, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-3.png) 
 
 ```r
+with(Data, risk.table(Anatomical, FollowUp, Status))
+```
+
+
+
+|                                  | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:---------------------------------|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|Glans alone                       | 26 | 19 | 14  | 13  | 10  |  3  |  1  |
+|Glans + Coronal sulcus            | 6  | 5  |  5  |  3  |  2  |  2  |  2  |
+|Glans + Coronal sulcus + Foreskin | 9  | 7  |  7  |  5  |  2  |  1  |  1  |
+
+```r
 # By anatomical level
 with(Data, survival.plot(Level, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1053,6 +1213,18 @@ with(Data, survival.plot(Level, FollowUp, Status,
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-4.png) 
+
+```r
+with(Data, risk.table(Level, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|
+|Corpus cavernosum | 27 | 19 | 15  | 12  |  8  |
+|Corpus spongiosum | 12 | 10 | 10  |  8  |  5  |
+|Lamina propria    | 2  | 2  |  1  |  1  |  1  |
 
 ```r
 # By median tumor size
@@ -1064,6 +1236,17 @@ with(Data, survival.plot(Size_Median, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-5.png) 
 
 ```r
+with(Data, risk.table(Size_Median, FollowUp, Status))
+```
+
+
+
+|                  | 0  | 50 | 100 | 150 | 200 |
+|:-----------------|:--:|:--:|:---:|:---:|:---:|
+|Above Median Size | 9  | 7  |  6  |  5  |  3  |
+|Below Median Size | 17 | 11 |  7  |  4  |  2  |
+
+```r
 # By median patient's age
 with(Data, survival.plot(Age_Median, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1071,6 +1254,17 @@ with(Data, survival.plot(Age_Median, FollowUp, Status,
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-6.png) 
+
+```r
+with(Data, risk.table(Age_Median, FollowUp, Status))
+```
+
+
+
+|                 | 0  | 50 | 100 | 150 | 200 |
+|:----------------|:--:|:--:|:---:|:---:|:---:|
+|Above Median Age | 19 | 13 | 10  |  7  |  5  |
+|Below Median Age | 22 | 18 | 16  | 14  |  9  |
 
 ```r
 # By urethral invasion
@@ -1082,6 +1276,17 @@ with(Data, survival.plot(Urethra, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-7.png) 
 
 ```r
+with(Data, risk.table(Urethra, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 | 250 | 300 |
+|:---|:--:|:--:|:---:|:---:|:---:|:---:|:---:|
+|No  | 19 | 14 | 12  | 10  |  6  |  2  |  1  |
+|Yes | 15 | 11 |  9  |  7  |  4  |  3  |  3  |
+
+```r
 # By vascular invasion
 with(Data, survival.plot(Vascular, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1089,6 +1294,17 @@ with(Data, survival.plot(Vascular, FollowUp, Status,
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-8.png) 
+
+```r
+with(Data, risk.table(Vascular, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 |
+|:---|:--:|:--:|:---:|:---:|:---:|
+|No  | 36 | 27 | 22  | 17  | 12  |
+|Yes | 4  | 3  |  3  |  3  |  2  |
 
 ```r
 # By perineural invasion
@@ -1100,6 +1316,17 @@ with(Data, survival.plot(Perineural, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-9.png) 
 
 ```r
+with(Data, risk.table(Perineural, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 | 150 | 200 | 250 |
+|:---|:--:|:--:|:---:|:---:|:---:|:---:|
+|No  | 34 | 26 | 21  | 16  | 11  |  5  |
+|Yes | 6  | 4  |  4  |  4  |  3  |  1  |
+
+```r
 # By pathological T stage
 with(Data, survival.plot(pT, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1109,6 +1336,18 @@ with(Data, survival.plot(pT, FollowUp, Status,
 ![plot of chunk DOD_Survival](figure/DOD_Survival-10.png) 
 
 ```r
+with(Data, risk.table(pT, FollowUp, Status))
+```
+
+
+
+|   | 0  | 50 |
+|:--|:--:|:--:|
+|T1 | 1  | 1  |
+|T2 | 18 | 13 |
+|T3 | 15 | 11 |
+
+```r
 # By clinical N stage
 with(Data, survival.plot(cN, FollowUp, Status,
   ylim = c(0.6, 1), position = "bottomright", xlab = x.lab, ylab = y.lab,
@@ -1116,6 +1355,18 @@ with(Data, survival.plot(cN, FollowUp, Status,
 ```
 
 ![plot of chunk DOD_Survival](figure/DOD_Survival-11.png) 
+
+```r
+with(Data, risk.table(cN, FollowUp, Status))
+```
+
+
+
+|    | 0  | 50 | 100 |
+|:---|:--:|:--:|:---:|
+|cN0 | 20 | 16 | 13  |
+|cN1 | 7  | 3  |  2  |
+|cN2 | 13 | 11 | 10  |
 
 ***
 
@@ -1164,16 +1415,16 @@ logistic.table(Outcome, Predictors, Varlabels)
 |Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
 |:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
 |Superficial high-grade vs. deep low-grade |  14.00  |     1.77     |    295.70     |  0.026  |
-|Primary treatment                         | 1.3e-08 |      NA      |   2.1e+117    |   0.99  |
-|Age > median                              |  0.53   |    0.064     |     3.59      |   0.52  |
-|Multicompartment tumor                    |  1.18   |     0.14     |     8.03      |   0.87  |
+|Primary treatment                         | 1.3e-08 |      NA      |   2.1e+117    |  0.99   |
+|Age > median                              |  0.53   |    0.064     |     3.59      |  0.52   |
+|Multicompartment tumor                    |  1.18   |     0.14     |     8.03      |  0.87   |
 |Invasion of corpus cavernosum             |  0.096  |    0.0046    |     0.75      |  0.047  |
-|Tumor size > median                       |  1.07   |    0.088     |     25.05     |   0.96  |
-|Invasion of penile urethra                |  0.27   |    0.013     |     2.09      |   0.26  |
-|Vascular invasion                         |  11.00  |     1.03     |    127.12     |   0.04  |
-|Perineural invasion                       |  5.17   |     0.56     |     42.50     |   0.12  |
-|High pT (>pT3)                            |  0.27   |    0.013     |     2.09      |   0.26  |
-|Positive clinical nodes                   |  1.59   |     0.24     |     13.20     |   0.63  |
+|Tumor size > median                       |  1.07   |    0.088     |     25.05     |  0.96   |
+|Invasion of penile urethra                |  0.27   |    0.013     |     2.09      |  0.26   |
+|Vascular invasion                         |  11.00  |     1.03     |    127.12     |  0.04   |
+|Perineural invasion                       |  5.17   |     0.56     |     42.50     |  0.12   |
+|High pT (>pT3)                            |  0.27   |    0.013     |     2.09      |  0.26   |
+|Positive clinical nodes                   |  1.59   |     0.24     |     13.20     |  0.63   |
 
 *** 
 
@@ -1188,17 +1439,17 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 |Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
 |:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade |  2.45   |    0.092     |     65.89     |   0.54  |
-|Primary treatment                         |  1.71   |    0.064     |     45.68     |   0.71  |
-|Age > median                              |  0.81   |     0.03     |     21.49     |   0.88  |
-|Multicompartment tumor                    | 1.4e-08 |      NA      |      Inf      |      1  |
-|Invasion of corpus cavernosum             |  0.52   |    0.019     |     13.87     |   0.65  |
-|Tumor size > median                       |  0.50   |    0.018     |     13.76     |   0.64  |
-|Invasion of penile urethra                |  1.21   |    0.045     |     32.60     |   0.89  |
-|Vascular invasion                         | 1.4e-07 |      NA      |   2.4e+227    |      1  |
-|Perineural invasion                       |  6.40   |     0.23     |    180.98     |   0.21  |
-|High pT (>pT3)                            |  1.21   |    0.045     |     32.60     |   0.89  |
-|Positive clinical nodes                   | 9.5e+07 |   1.8e-282   |      NA       |      1  |
+|Superficial high-grade vs. deep low-grade |  2.45   |    0.092     |     65.89     |  0.54   |
+|Primary treatment                         |  1.71   |    0.064     |     45.68     |  0.71   |
+|Age > median                              |  0.81   |     0.03     |     21.49     |  0.88   |
+|Multicompartment tumor                    | 1.4e-08 |      NA      |      Inf      |    1    |
+|Invasion of corpus cavernosum             |  0.52   |    0.019     |     13.87     |  0.65   |
+|Tumor size > median                       |  0.50   |    0.018     |     13.76     |  0.64   |
+|Invasion of penile urethra                |  1.21   |    0.045     |     32.60     |  0.89   |
+|Vascular invasion                         | 1.4e-07 |      NA      |   2.4e+227    |    1    |
+|Perineural invasion                       |  6.40   |     0.23     |    180.98     |  0.21   |
+|High pT (>pT3)                            |  1.21   |    0.045     |     32.60     |  0.89   |
+|Positive clinical nodes                   | 9.5e+07 |   1.8e-282   |      NA       |    1    |
 
 *** 
 
@@ -1213,17 +1464,17 @@ logistic.table(Outcome, Predictors, Varlabels)
 
 |Variables                                 |  OR   | Lower 95% CI | Higher 95% CI | P value |
 |:-----------------------------------------|:-----:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade | 3.12  |     0.61     |     16.27     |   0.16  |
-|Primary treatment                         | 0.45  |     0.06     |     2.31      |   0.37  |
-|Age > median                              | 0.44  |     0.08     |     2.11      |   0.31  |
-|Multicompartment tumor                    | 1.05  |     0.19     |     5.08      |   0.95  |
-|Invasion of corpus cavernosum             | 0.43  |    0.086     |     2.17      |    0.3  |
-|Tumor size > median                       | 0.75  |     0.10     |     6.70      |   0.78  |
-|Invasion of penile urethra                | 0.70  |     0.12     |     3.48      |   0.67  |
+|Superficial high-grade vs. deep low-grade | 3.12  |     0.61     |     16.27     |  0.16   |
+|Primary treatment                         | 0.45  |     0.06     |     2.31      |  0.37   |
+|Age > median                              | 0.44  |     0.08     |     2.11      |  0.31   |
+|Multicompartment tumor                    | 1.05  |     0.19     |     5.08      |  0.95   |
+|Invasion of corpus cavernosum             | 0.43  |    0.086     |     2.17      |   0.3   |
+|Tumor size > median                       | 0.75  |     0.10     |     6.70      |  0.78   |
+|Invasion of penile urethra                | 0.70  |     0.12     |     3.48      |  0.67   |
 |Vascular invasion                         | 18.60 |     1.96     |    421.69     |  0.019  |
 |Perineural invasion                       | 5.80  |     0.87     |     40.60     |  0.064  |
-|High pT (>pT3)                            | 0.70  |     0.12     |     3.48      |   0.67  |
-|Positive clinical nodes                   | 1.89  |     0.40     |     10.50     |   0.43  |
+|High pT (>pT3)                            | 0.70  |     0.12     |     3.48      |  0.67   |
+|Positive clinical nodes                   | 1.89  |     0.40     |     10.50     |  0.43   |
 
 *** 
 
@@ -1232,24 +1483,124 @@ Tumor median size was removed due to the lack of events in either level.
 
 ```r
 Outcome <- Data$DOD
-Predictors <- Predictors[-grep("Tumor size > median", Varlabels)]
-Varlabels <- names(Predictors)
-logistic.table(Outcome, Predictors, Varlabels)
+Predictors_DOD <- Predictors[-grep("Tumor size > median", Varlabels)]
+Varlabels_DOD <- names(Predictors_DOD)
+logistic.table(Outcome, Predictors_DOD, Varlabels_DOD)
 ```
 
 
 
 |Variables                                 |   OR    | Lower 95% CI | Higher 95% CI | P value |
 |:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
-|Superficial high-grade vs. deep low-grade | 3.3e-08 |      NA      |      Inf      |      1  |
-|Primary treatment                         | 1.5e+08 |     0.00     |      NA       |      1  |
-|Age > median                              | 7.7e-09 |      NA      |      Inf      |      1  |
-|Multicompartment tumor                    | 1.7e+08 |     0.00     |      NA       |      1  |
-|Invasion of corpus cavernosum             | 3.3e+07 |     0.00     |      NA       |      1  |
-|Invasion of penile urethra                | 2.1e-08 |      NA      |      Inf      |      1  |
-|Vascular invasion                         | 1.1e-07 |      NA      |      Inf      |      1  |
-|Perineural invasion                       |  1e-07  |      NA      |      Inf      |      1  |
-|High pT (>pT3)                            | 2.1e-08 |      NA      |      Inf      |      1  |
-|Positive clinical nodes                   | 8.2e-09 |      NA      |      Inf      |      1  |
+|Superficial high-grade vs. deep low-grade | 3.3e-08 |      NA      |      Inf      |    1    |
+|Primary treatment                         | 1.5e+08 |     0.00     |      NA       |    1    |
+|Age > median                              | 7.7e-09 |      NA      |      Inf      |    1    |
+|Multicompartment tumor                    | 1.7e+08 |     0.00     |      NA       |    1    |
+|Invasion of corpus cavernosum             | 3.3e+07 |     0.00     |      NA       |    1    |
+|Invasion of penile urethra                | 2.1e-08 |      NA      |      Inf      |    1    |
+|Vascular invasion                         | 1.1e-07 |      NA      |      Inf      |    1    |
+|Perineural invasion                       |  1e-07  |      NA      |      Inf      |    1    |
+|High pT (>pT3)                            | 2.1e-08 |      NA      |      Inf      |    1    |
+|Positive clinical nodes                   | 8.2e-09 |      NA      |      Inf      |    1    |
 
 *** 
+
+### <a name="HR">Cox's Proportional Hazards Regression Analysis</a>
+#### Inguinal Lymph Node Metastasis
+
+```r
+Outcome <- Data$Mets
+FU <- Data$FollowUp
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+
+
+|Variables                                 |   HR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade |  6.13   |     0.68     |     55.02     |  0.065  |
+|Primary treatment                         | 2.7e-09 |     0.00     |      Inf      |  0.036  |
+|Age > median                              |  0.37   |    0.061     |     2.21      |  0.27   |
+|Multicompartment tumor                    |  1.26   |     0.21     |     7.65      |   0.8   |
+|Invasion of corpus cavernosum             |  0.18   |     0.02     |     1.60      |  0.079  |
+|Tumor size > median                       |  1.68   |     0.15     |     18.85     |  0.67   |
+|Invasion of penile urethra                |  0.37   |    0.042     |     3.34      |  0.34   |
+|Vascular invasion                         |  4.57   |     0.75     |     27.71     |  0.13   |
+|Perineural invasion                       |  2.92   |     0.48     |     17.68     |  0.27   |
+|High pT (>pT3)                            |  0.37   |    0.042     |     3.34      |  0.34   |
+|Positive clinical nodes                   |  2.26   |     0.37     |     13.82     |  0.37   |
+
+***
+
+#### Tumor Relapse
+
+```r
+Outcome <- Data$Relapse
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+
+
+|Variables                                 |   HR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade |  2.04   |     0.13     |     32.62     |  0.62   |
+|Primary treatment                         |  1.61   |     0.10     |     25.78     |  0.74   |
+|Age > median                              |  0.74   |    0.046     |     11.81     |  0.83   |
+|Multicompartment tumor                    | 2.6e-09 |     0.00     |      Inf      |  0.17   |
+|Invasion of corpus cavernosum             |  0.62   |    0.039     |     9.99      |  0.74   |
+|Tumor size > median                       |  0.57   |    0.035     |     9.06      |  0.69   |
+|Invasion of penile urethra                |  1.37   |    0.085     |     22.01     |  0.82   |
+|Vascular invasion                         | 1.3e-08 |     0.00     |      Inf      |  0.55   |
+|Perineural invasion                       |  6.09   |     0.38     |     97.49     |  0.23   |
+|High pT (>pT3)                            |  1.37   |    0.085     |     22.01     |  0.82   |
+|Positive clinical nodes                   | 1.7e+09 |     0.00     |      Inf      |  0.092  |
+
+*** 
+
+#### Final Nodal Status
+
+```r
+Outcome <- Data$Final_Nodal
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+
+
+|Variables                                 |  HR  | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:----:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade | 1.77 |     0.44     |     7.14      |  0.43   |
+|Primary treatment                         | 0.57 |     0.12     |     2.84      |  0.48   |
+|Age > median                              | 0.38 |    0.089     |     1.59      |  0.17   |
+|Multicompartment tumor                    | 1.10 |     0.26     |     4.63      |   0.9   |
+|Invasion of corpus cavernosum             | 0.65 |     0.16     |     2.60      |  0.54   |
+|Tumor size > median                       | 1.06 |     0.17     |     6.47      |  0.95   |
+|Invasion of penile urethra                | 0.83 |     0.20     |     3.46      |  0.79   |
+|Vascular invasion                         | 4.63 |     1.09     |     19.62     |  0.058  |
+|Perineural invasion                       | 2.91 |     0.69     |     12.28     |  0.17   |
+|High pT (>pT3)                            | 0.83 |     0.20     |     3.46      |  0.79   |
+|Positive clinical nodes                   | 2.12 |     0.50     |     9.06      |   0.3   |
+
+*** 
+
+#### Cancer-Related Death
+
+```r
+Outcome <- Data$DOD
+cox.table(Outcome, FU, Predictors, Varlabels)
+```
+
+
+
+|Variables                                 |   HR    | Lower 95% CI | Higher 95% CI | P value |
+|:-----------------------------------------|:-------:|:------------:|:-------------:|:-------:|
+|Superficial high-grade vs. deep low-grade | 3.2e-09 |     0.00     |      Inf      |  0.41   |
+|Primary treatment                         |  1e+09  |     0.00     |      Inf      |  0.17   |
+|Age > median                              | 1.4e-09 |     0.00     |      Inf      |  0.21   |
+|Multicompartment tumor                    | 1.2e+09 |     0.00     |      Inf      |  0.16   |
+|Invasion of corpus cavernosum             | 3.6e+08 |     0.00     |      Inf      |  0.36   |
+|Tumor size > median                       |  1.00   |     1.00     |     1.00      |    1    |
+|Invasion of penile urethra                | 2.1e-09 |     0.00     |      Inf      |  0.28   |
+|Vascular invasion                         | 1.3e-08 |     0.00     |      Inf      |  0.65   |
+|Perineural invasion                       | 4.3e-09 |     0.00     |      Inf      |  0.57   |
+|High pT (>pT3)                            | 2.1e-09 |     0.00     |      Inf      |  0.28   |
+|Positive clinical nodes                   | 1.7e-09 |     0.00     |      Inf      |  0.24   |
