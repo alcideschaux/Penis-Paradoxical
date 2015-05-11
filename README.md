@@ -111,6 +111,8 @@ __Survival Analysis.__ For all variables in the dataset survival curves were bui
 
 __<a href="#OR">Logistic Regression Analysis.</a>__ Odds ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
 
+__<a href="#HR">Cox's Proportional Hazards Regression Analysis.</a>__ Hazard ratios (OR) with 95% confidence intervals (CI) and their associated P values were estimated for superficial high-grade vs. deep low-grade tumors, considering inguinal lymph node metastasis, tumor relapse, final nodal status, and cancer-related death.
+
 
 ```r
 library(knitr)
