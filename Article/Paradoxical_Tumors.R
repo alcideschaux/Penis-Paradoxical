@@ -1,9 +1,9 @@
 # DATASET #
 # Loading the full dataset with 333 patients
 # The full dataset is available at http://files.figshare.com/1868801/PenisSCC_333.csv
-        Data <- read.csv("PenisSCC_333.csv")
+        Data_Full <- read.csv("PenisSCC_333.csv")
 # Excluding cases lost at follow-up
-        Data <- subset(Data, Outcome != "Lost at follow-up")
+        Data <- subset(Data_Full, Outcome != "Lost at follow-up")
 
 # RECODING NEW VARIABLES #
 # Creating a new variable for cancer-related death
@@ -64,7 +64,7 @@ survival.plot <- function(x, fu, outcome, title, position = "topright", logrank 
         survival.lr <- survdiff(survival.obj ~ x)
         survival.p <- pchisq(survival.lr$chisq, df = 1, lower = FALSE)
         survival.x <- survfit(survival.obj ~ x)
-        plot(survival.x, main = title, xlab = "", ylab = "",
+        plot(survival.x, main = title,
                 col =c(1,2,4), mark = c(2,0,5), lty = c(2,1,3), ...)
         legend(x = position, legend = levels(x), pch = c(2,0,5), lty = c(2,1,3),
                 col = c(1,2,4), bty = "n")
@@ -139,3 +139,28 @@ GLM_DOD_OR <- format(exp(coef(GLM_DOD))[2], digits = 2)
 GLM_DOD_CI <- format(exp(confint(GLM_DOD))[2,], digits = 2)
 GLM_DOD_P <- format(summary(GLM_DOD)$coef[2,4], digits = 2)
 
+# Cox regression analysis
+## Inguinal lymph node metastasis
+Response <- with(Data, Surv(FollowUp, as.numeric(Mets)))
+COX_Mets <- coxph(Response ~ Paradoxical_Inv)
+COX_Mets_HR <- format(summary(COX_Mets)$conf.int[1], digits = 2, nsmall = 2)
+COX_Mets_CI <- format(summary(COX_Mets)$conf.int[3:4], digits = 2, nsmall = 2)
+COX_Mets_P <- format(summary(COX_Mets)$logtest[3], digits = 2, nsmall = 2)
+## Tumor relapse
+Response <- with(Data, Surv(FollowUp, as.numeric(Relapse)))
+COX_Relapse <- coxph(Response ~ Paradoxical_Inv)
+COX_Relapse_HR <- format(summary(COX_Relapse)$conf.int[1], digits = 2, nsmall = 2)
+COX_Relapse_CI <- format(summary(COX_Relapse)$conf.int[3:4], digits = 2, nsmall = 2)
+COX_Relapse_P <- format(summary(COX_Relapse)$logtest[3], digits = 2, nsmall = 2)
+## Final nodal status
+Response <- with(Data, Surv(FollowUp, as.numeric(Final_Nodal)))
+COX_FN <- coxph(Response ~ Paradoxical_Inv)
+COX_FN_HR <- format(summary(COX_FN)$conf.int[1], digits = 2, nsmall = 2)
+COX_FN_CI <- format(summary(COX_FN)$conf.int[3:4], digits = 2, nsmall = 2)
+COX_FN_P <- format(summary(COX_FN)$logtest[3], digits = 2, nsmall = 2)
+## DOD
+Response <- with(Data, Surv(FollowUp, as.numeric(DOD)))
+COX_DOD <- coxph(Response ~ Paradoxical_Inv)
+COX_DOD_HR <- format(summary(COX_DOD)$conf.int[1], digits = 2, nsmall = 2)
+COX_DOD_CI <- format(summary(COX_DOD)$conf.int[3:4], digits = 2, nsmall = 2)
+COX_DOD_P <- format(summary(COX_DOD)$logtest[3], digits = 2, nsmall = 2)
