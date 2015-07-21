@@ -8,7 +8,7 @@ This repository contains the full statistical analysis of the dataset that was u
 
 This repository also contains the following files:
 
-* The final PDF version of the [article](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/Article/Paradoxical_Tumors.pdf), as submitted for consideration of publication
+* The preprint (post accepted) version of the [article](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/Article/Paradoxical_Tumors.pdf)
 * The [BibTeX](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/Article/References.bib) file containing all the references cited in the article
 * The [R script](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/Article/Paradoxical_Tumors.R) that was used for analyzing the dataset and write the article
 * The [R Markdown](https://github.com/alcideschaux/Penis-Paradoxical/blob/master/README.Rmd) file used for this report
